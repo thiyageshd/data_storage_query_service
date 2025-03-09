@@ -1,0 +1,9 @@
+kafka
+fastapi
+uvicorn
+requests
+redis
+rq
+pymongo
+sqlalchemy
+loguru
