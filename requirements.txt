@@ -1,0 +1,10 @@
+confluent-kafka
+fastapi
+uvicorn
+requests
+redis
+rq
+pymongo
+sqlalchemy
+psycopg2
+loguru

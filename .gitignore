@@ -127,6 +127,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*query_ms
+*.query_ms
+*__MACOSX
 
 # Spyder project settings
 .spyderproject
