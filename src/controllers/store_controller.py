@@ -1,7 +1,7 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import JSONResponse
-from src.services.sql_service import SQLService
-from src.services.nosql_service import NoSQLService
+from services.sql_service import SQLService
+from services.nosql_service import NoSQLService
 
 store_router = APIRouter()
 sql_service = SQLService()

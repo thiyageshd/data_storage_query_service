@@ -1,6 +1,24 @@
-from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Float, create_engine
 from sqlalchemy.orm import sessionmaker
+
 from config import Config
+
+Base = declarative_base()
+engine = create_engine(Config.POSTGRES_URL)
+
+class Financials(Base):
+    __tablename__ = "financials"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    company = Column(String, index=True)
+    year = Column(Integer, index=True)
+    revenue = Column(Float)
+    profit = Column(Float)
+
+
+def init_db():
+    Base.metadata.create_all(engine)
 
 class DatabaseSession:
     _instance = None

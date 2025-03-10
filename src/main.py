@@ -1,23 +1,28 @@
 from fastapi import FastAPI
-from src.controllers import query_router, store_router
-from src.services.kafka_consumer import KafkaConsumerService
-import threading
+import asyncio
 from contextlib import asynccontextmanager
 
-app = FastAPI(title="Data Storage Query Service")
-app.include_router(query_router, prefix="/query")
-app.include_router(store_router, prefix="/store")
+from controllers import query_router, store_router
+from services.kafka_consumer import KafkaConsumerService
+from clients.sql_client import init_db as init_sql_db
+from clients.nosql_client import init_db as init_nosql_db
 
-def start_kafka_consumer():
-    consumer = KafkaConsumerService()
-    consumer.start_consumer()
 
+consumer = KafkaConsumerService()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Application is starting...")
-    threading.Thread(target=start_kafka_consumer).start()
+    """Manage application startup and shutdown."""
+    asyncio.create_task(consumer.start_async_consumer())
+    init_sql_db()
+    init_nosql_db()
     yield
+    consumer.stop() 
+
+
+app = FastAPI(title="Data Storage Query Service", lifespan=lifespan)
+app.include_router(query_router, prefix="/query")
+app.include_router(store_router, prefix="/store")
 
 
 @app.get("/")

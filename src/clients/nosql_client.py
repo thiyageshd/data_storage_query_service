@@ -1,7 +1,13 @@
 from pymongo import MongoClient, ASCENDING
 from config import Config
 
+client = MongoClient(Config.MONGODB_URI)
+db = client.get_database()
 
+def init_db():
+    # Create indexes if needed
+    db.news.create_index([("company", 1), ("date", 1)])
+    
 class MongoDBClient:
     _instance = None
 

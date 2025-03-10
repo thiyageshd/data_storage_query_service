@@ -5,7 +5,7 @@ from schemas.financials import FinancialsRequest, FinancialsResponse
 
 class SQLService:
     async def store_financials(self, data):
-        session = db_session()
+        session = db_session.SessionLocal()
         for item in data:
             financial = Financials(**item)
             session.add(financial)
@@ -14,7 +14,7 @@ class SQLService:
         return True
 
     async def query_financials(self, request: FinancialsRequest):
-        session = db_session()
+        session = db_session.SessionLocal()
         query_params = request.model_dump()
         query = session.query(Financials)
         if 'company' in query_params:

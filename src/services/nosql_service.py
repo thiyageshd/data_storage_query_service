@@ -1,20 +1,14 @@
-from pymongo import MongoClient
+from clients import MongoDBClient
 from typing import List, Dict
 from datetime import datetime
 from loguru import logger
 
-from src.config import Config
-from clients import MongoDBClient
-from schemas.news import NewsRequest, NewsResponse, NewsItem
+from schemas import NewsRequest, NewsResponse, NewsItem
 
-
-client = MongoClient(Config.MONGODB_URI)
-db = client.get_database()
 
 class NoSQLService:
     def __init__(self):
         self.client = MongoDBClient()
-
 
     async def store_news(self, company: str, news_data: List[Dict]):
         """ Stores news articles in MongoDB. """
